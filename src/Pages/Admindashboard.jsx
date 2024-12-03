@@ -422,7 +422,7 @@ const Admindashboard = () => {
                           ? user.image
                           : "https://via.placeholder.com/150"
                       }
-                      alt={user.name}
+          
                       className="h-10 w-10 rounded-full object-cover mr-4"
                     />
                     <div>
