@@ -16,7 +16,7 @@ const UserDashboard = () => {
     console.log(access);
     const fetchUserAccess = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/access", {
+        const response = await axios.get("https://backendvrv.onrender.com/access", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`, 
           },

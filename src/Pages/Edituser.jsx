@@ -42,7 +42,7 @@ const EditUser = ({ isOpen, onClose, user, refreshUsers }) => {
 
     try {
       // Send PUT request to update the user details
-      const response = await axios.put(`http://localhost:5000/api/users/${user._id}`, {
+      const response = await axios.put(`https://backendvrv.onrender.com/api/users/${user._id}`, {
         name,
         email,
         profileImage: profileImage || placeholderImage,

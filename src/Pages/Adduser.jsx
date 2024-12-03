@@ -30,7 +30,7 @@ const AddUser = ({ isOpen, onClose, refreshUsers }) => {
 
     try {
       // Send request to the server to add the new user
-      await axios.post("http://localhost:5000/api/users", {
+      await axios.post("https://backendvrv.onrender.com/api/users", {
         name,
         email,
         password,

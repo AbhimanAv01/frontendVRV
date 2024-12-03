@@ -34,7 +34,7 @@ const Admindashboard = () => {
     // Fetch users data 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/users", {
+        const response = await axios.get("https://backendvrv.onrender.com/api/users", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -101,7 +101,7 @@ const Admindashboard = () => {
 
   const refreshUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/users");
+      const response = await axios.get("https://backendvrv.onrender.com/api/users");
       setUsers(response.data);
     } catch (err) {
       console.error("Failed to refresh users", err);
@@ -130,7 +130,7 @@ const Admindashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/users");
+        const response = await axios.get("https://backendvrv.onrender.com/api/users");
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);

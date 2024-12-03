@@ -7,7 +7,7 @@ const DeleteUser = ({ isOpen, onClose, user, refreshUsers }) => {
   const handleDelete = async () => {
     setError(""); 
     try {
-      await axios.delete(`http://localhost:5000/api/users/${user._id}`);
+      await axios.delete(`https://backendvrv.onrender.com/api/users/${user._id}`);
       refreshUsers(); 
       onClose(); 
     } catch (err) {

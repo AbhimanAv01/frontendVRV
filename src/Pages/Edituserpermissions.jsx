@@ -23,7 +23,7 @@ const Edituserpermissions = ({ isOpen, onClose, user, refreshUsers }) => {
     const selectedAccess = Object.keys(access).filter((role) => access[role]);
 
     try {
-      await axios.put(`http://localhost:5000/api/users/${user._id}`, {
+      await axios.put(`https://backendvrv.onrender.com/api/users/${user._id}`, {
         access: selectedAccess,
       });
 
