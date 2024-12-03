@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# Role-Based Access Control (RBAC) System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+This project implements a Role-Based Access Control (RBAC) system where:
+- Admin users have the ability to manage a list of users with details such as username, access level, status (active/inactive), and date/time of addition.
+- Admin users can edit user details, change permissions, delete users, and toggle account status (active/inactive) from the user list.
 
-In the project directory, you can run:
+For regular users:
+- Users can log in to their respective dashboards. 
+- Depending on their permissions, users can either upload or download PDFs:
+  - **Data Export Access:** Users can upload PDFs.
+  - **Data Import Access:** Users can download PDFs.
+  - **Both Accesses:** Users can both upload and download PDFs.
+  - **No Access:** Users cannot perform any of these actions.
 
-### `npm start`
+Authentication is managed via **JWT** for secure login and access to respective dashboards.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Admin Dashboard:**
+  - View and manage all users, including username, access level, status, and date/time of account creation.
+  - Edit user details and change permissions.
+  - Delete users.
+  - Toggle user account status between active and inactive.
 
-### `npm test`
+- **User Dashboard:**
+  - Ability to log in and access the dashboard based on permissions.
+  - Depending on access:
+    - **Data Export Access:** Upload PDFs.
+    - **Data Import Access:** Download PDFs.
+    - **Both:** Upload and download PDFs.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies Used
 
-### `npm run build`
+- **Frontend:** React, Tailwind CSS
+- **Backend:** Node.js
+- **Authentication:** JWT (JSON Web Token)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Deployment
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Frontend:** [Live Deployment](https://frontendvrv.onrender.com)
+  
+## GitHub Repositories
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Frontend Repository:** [GitHub Frontend](https://github.com/AbhimanAv01/frontendVRV)
+- **Backend Repository:** [GitHub Backend](https://github.com/AbhimanAv01/backendVRV)
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
