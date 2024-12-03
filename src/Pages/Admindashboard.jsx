@@ -160,14 +160,14 @@ const Admindashboard = () => {
 
       const response = await axios.put(
         `https://backendvrv.onrender.com/${userId}/toggle-status`,
-        {},
-        
+        {}
       );
       setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user._id === userId
-            ? { ...user, isActive: response.data.isActive } // Update only the affected user
-            : user // Keep the rest of the users unchanged
+        prevUsers.map(
+          (user) =>
+            user._id === userId
+              ? { ...user, isActive: response.data.isActive } // Update only the affected user
+              : user // Keep the rest of the users unchanged
         )
       );
       setOpenMenuId(openMenuId === userId ? null : userId);
@@ -415,7 +415,7 @@ const Admindashboard = () => {
                   key={index}
                   className="border-t p-4 hover:bg-gray-50 transition duration-150 relative"
                 >
-                  <div className="flex items-center">
+                  <div className="flex items-center justify-between">
                     <img
                       src={
                         user.image
@@ -428,6 +428,28 @@ const Admindashboard = () => {
                     <div>
                       <div className="font-medium">{user.name}</div>
                       <div className="text-gray-600 text-sm">{user.email}</div>
+                    </div>
+                    {/* Active/Inactive Toggle */}
+                    <div className="px-4 py-2 ">
+                      <label
+                        key={user._id}
+                        className="relative inline-flex items-center cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={user.isActive}
+                          onChange={() => toggleUserStatus(user._id)}
+                          className="sr-only peer"
+                        />
+                        <div
+                          className={`w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-green-500 peer-focus:ring-4 peer-focus:ring-green-300 transition-all`}
+                        ></div>
+                        <span
+                          className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ease-in-out ${
+                            user.isActive ? "translate-x-5" : ""
+                          }`}
+                        ></span>
+                      </label>
                     </div>
                   </div>
 
@@ -446,6 +468,7 @@ const Admindashboard = () => {
                       </span>
                     ))}
                   </div>
+
                   <div className="mt-2">
                     <strong>Last active:</strong> {user.lastActive}
                   </div>
