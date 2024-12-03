@@ -6,19 +6,21 @@ import Edituserpermissions from "./Edituserpermissions";
 import DeleteUser from "./Deleteuser";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
+import "react-toastify/dist/ReactToastify.css";
 
 const Admindashboard = () => {
-  const [openMenuIndex, setOpenMenuIndex] = useState(null); 
+  const [openMenuIndex, setOpenMenuIndex] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); 
-  const [sortOption, setSortOption] = useState(""); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortOption, setSortOption] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditpermissionModalOpen, setIseditpermissionModalOpen] =
     useState(false);
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [isActive, setIsActive] = useState();
   const username = localStorage.getItem("username");
   const token = localStorage.getItem("token");
 
@@ -31,14 +33,17 @@ const Admindashboard = () => {
       return;
     }
 
-    // Fetch users data 
+    // Fetch users data
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://backendvrv.onrender.com/api/users", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "https://backendvrv.onrender.com/api/users",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -48,7 +53,7 @@ const Admindashboard = () => {
     fetchUsers();
   }, [token, navigate]);
 
-  // Search 
+  // Search
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -64,7 +69,6 @@ const Admindashboard = () => {
     return "Good Evening";
   };
 
-  
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -74,19 +78,19 @@ const Admindashboard = () => {
   };
 
   const handleEditUser = (user) => {
-    setSelectedUser(user); 
+    setSelectedUser(user);
     setIsEditModalOpen(true);
     toggleMenu();
   };
 
   const handleChangePermissions = (user) => {
     setSelectedUser(user);
-    setIseditpermissionModalOpen(true); 
+    setIseditpermissionModalOpen(true);
     toggleMenu();
   };
 
   const handleDeleteUser = (user) => {
-    setSelectedUser(user); 
+    setSelectedUser(user);
     setIsDeleteModalOpen(true);
     toggleMenu();
   };
@@ -101,7 +105,9 @@ const Admindashboard = () => {
 
   const refreshUsers = async () => {
     try {
-      const response = await axios.get("https://backendvrv.onrender.com/api/users");
+      const response = await axios.get(
+        "https://backendvrv.onrender.com/api/users"
+      );
       setUsers(response.data);
     } catch (err) {
       console.error("Failed to refresh users", err);
@@ -130,7 +136,9 @@ const Admindashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://backendvrv.onrender.com/api/users");
+        const response = await axios.get(
+          "https://backendvrv.onrender.com/api/users"
+        );
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -139,15 +147,49 @@ const Admindashboard = () => {
     fetchUsers();
   }, []);
 
+  const toggleactivebutton = (userId) => {
+    setOpenMenuId(openMenuId === userId ? null : userId);
+  };
+
+  const toggleUserStatus = async (userId) => {
+    try {
+      // Make sure userId is a string
+      if (typeof userId !== "string") {
+        throw new Error("Invalid userId");
+      }
+
+      const response = await axios.put(
+        `https://backendvrv.onrender.com/${userId}/toggle-status`,
+        {},
+        
+      );
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user._id === userId
+            ? { ...user, isActive: response.data.isActive } // Update only the affected user
+            : user // Keep the rest of the users unchanged
+        )
+      );
+      setOpenMenuId(openMenuId === userId ? null : userId);
+      setIsActive(response.data.isActive);
+
+      toast.success("User status updated successfully!");
+    } catch (error) {
+      console.error("Failed to toggle user status:", error);
+      toast.error("Failed to update user status.");
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8"
-    style={{
-      backgroundImage:
-        'url("https://res.cloudinary.com/dt8emxboh/image/upload/v1733221481/ckelp2ks0l9qcvf2xv62.png")',
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      
-    }}>
+    <div
+      className="min-h-screen bg-gray-50 p-4 md:p-8"
+      style={{
+        backgroundImage:
+          'url("https://res.cloudinary.com/dt8emxboh/image/upload/v1733221481/ckelp2ks0l9qcvf2xv62.png")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <ToastContainer />
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center mb-6">
@@ -158,7 +200,6 @@ const Admindashboard = () => {
             {`  ${username}`}
           </h1>
 
-    
           <div className="ml-auto">
             <button
               className="bg-black text-white px-4 py-2 rounded-md mt-4"
@@ -219,9 +260,9 @@ const Admindashboard = () => {
                 <tr>
                   <th className="px-4 py-2">User name</th>
                   <th className="px-4 py-2 ">Access</th>
-                  <th className="px-4 py-2 w-1/6">Last active</th>
+                  <th className="px-4 py-2 w-1/6">Status</th>
                   <th className="px-4 py-2 w-1/6">Date added</th>
-                  <th className="mr-3 py-2  ">Options</th>
+                  <th className="mr-3 py-2">Options</th>
                 </tr>
               </thead>
               <tbody>
@@ -261,12 +302,34 @@ const Admindashboard = () => {
                         </span>
                       ))}
                     </td>
-                    <td className="px-4 py-2">{user.lastActive}</td>
+
+                    {/* Active/Inactive Toggle */}
+                    <td className="px-4 py-2">
+                      <label
+                        key={user._id}
+                        className="relative inline-flex items-center cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={user.isActive}
+                          onChange={() => toggleUserStatus(user._id)} // Pass the userId correctly
+                          className="sr-only peer"
+                        />
+                        <div
+                          className={`w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-green-500 peer-focus:ring-4 peer-focus:ring-green-300 transition-all`}
+                        ></div>
+                        <span
+                          className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 ease-in-out ${
+                            user.isActive ? "translate-x-5" : ""
+                          }`}
+                        ></span>
+                      </label>
+                    </td>
                     <td className="px-4 py-2">{user.dateAdded}</td>
                     <td className="px-4 py-2 text-center">
                       <button
                         className="text-gray-700 hover:text-black focus:outline-none"
-                        onClick={() => toggleMenu(index)} 
+                        onClick={() => toggleMenu(index)}
                       >
                         &#x2022;&#x2022;&#x2022;
                       </button>
@@ -392,7 +455,7 @@ const Admindashboard = () => {
                   <div className="mt-2 text-center">
                     <button
                       className="text-gray-700 hover:text-black focus:outline-none"
-                      onClick={() => toggleMenu(index)} 
+                      onClick={() => toggleMenu(index)}
                     >
                       &#x2022;&#x2022;&#x2022;
                     </button>
@@ -435,7 +498,6 @@ const Admindashboard = () => {
         </div>
       </div>
 
-   
       <AddUser
         isOpen={isModalOpen}
         onClose={handleCloseModal}
@@ -446,9 +508,9 @@ const Admindashboard = () => {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         user={selectedUser}
-        refreshUsers={refreshUsers} 
+        refreshUsers={refreshUsers}
       />
-   
+
       <Edituserpermissions
         isOpen={isEditpermissionModalOpen}
         onClose={() => setIseditpermissionModalOpen(false)}

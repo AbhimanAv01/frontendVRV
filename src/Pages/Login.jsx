@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
@@ -22,6 +22,14 @@ const Login = () => {
       });
   
       const data = response.data;  // Axios already parses the response to JSON
+        // Check if user is active
+        console.log(data)
+    if (!data.isActive) {
+      // If the account is inactive, show the toast and prevent further action
+      toast.error("Your account is inactive. Please contact the admin.");
+      setError("Your account is inactive. Please contact the admin.");
+      return; // Stop further processing
+    }
       if (data?.access?.includes("Admin")) {
         // Store JWT token and username in local storage
         localStorage.setItem("token", data.token);
